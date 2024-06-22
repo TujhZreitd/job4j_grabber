@@ -30,6 +30,17 @@ public class HabrCareerParse {
                 System.out.printf("%s %s %s%n", vacancyName, dateTime.attr("dateTime"), link);
             });
         }
+    }
 
+    private String retrieveDescription(String link) {
+        Connection connection = Jsoup.connect(link);
+        Document document = null;
+        try {
+            document = connection.get();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Element row = document.select(".vacancy-description__text").first();
+        return row.text();
     }
 }
