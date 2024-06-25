@@ -4,4 +4,4 @@ create table post (
 	text text,
 	link text UNIQUE,
 	created timestamp
-)
+);
