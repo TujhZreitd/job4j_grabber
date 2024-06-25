@@ -28,7 +28,15 @@ public class PsqlStore implements Store {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
 
+    private Post createPost(ResultSet res) throws SQLException {
+        return new Post(
+                res.getInt("id"),
+                res.getString("name"),
+                res.getString("link"),
+                res.getString("text"),
+                res.getTimestamp("created").toLocalDateTime());
     }
 
     @Override
@@ -49,17 +57,13 @@ public class PsqlStore implements Store {
     @Override
     public List<Post> getAll() {
         List<Post> result = new ArrayList<>();
-        try (Statement statement = connection.createStatement()) {
-            ResultSet date = statement.executeQuery("SELECT * FROM post");
-            while (date.next()) {
-                result.add(new Post(
-                        date.getInt("id"),
-                        date.getString("name"),
-                        date.getString("link"),
-                        date.getString("text"),
-                        date.getTimestamp("created").toLocalDateTime()
-                        ));
+        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM post")) {
+            try (ResultSet date = statement.executeQuery()) {
+                while (date.next()) {
+                    result.add(createPost(date));
+                }
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -68,15 +72,17 @@ public class PsqlStore implements Store {
 
     @Override
     public Post findById(int id) {
-        Post post = new Post();
-        try (Statement statement = connection.createStatement()) {
-            ResultSet date = statement.executeQuery(String.format("SELECT * FROM post WHERE id = %s", id));
-            while (date.next()) {
-                post.setId(date.getInt("id"));
-                post.setTitle(date.getString("name"));
-                post.setLink(date.getString("link"));
-                post.setDescription(date.getString("text"));
-                post.setCreated(date.getTimestamp("created").toLocalDateTime());
+        Post post = null;
+        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM post WHERE id = ?")) {
+            statement.setInt(1, id);
+            try (ResultSet date = statement.executeQuery()) {
+                if (date == null) {
+                    post = null;
+                } else {
+                    while (date.next()) {
+                        post = createPost(date);
+                    }
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
