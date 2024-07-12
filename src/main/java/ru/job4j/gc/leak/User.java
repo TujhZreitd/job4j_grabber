@@ -15,9 +15,4 @@ public class User {
     public void setName(String name) {
         this.name = name;
     }
-
-    /*@Override
-    protected void finalize() throws Throwable {
-        super.finalize();
-    }*/
 }

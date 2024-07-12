@@ -38,11 +38,13 @@ public class CommentGenerator implements Generate {
     public void generate() {
         comments.clear();
         for (int i = 0; i < COUNT; i++) {
-            String comment = String.format("%s%s%s%s%s",
-                    phrases.get(random.nextInt(phrases.size())), SEPARATOR,
-                    phrases.get(random.nextInt(phrases.size())), SEPARATOR,
-                    phrases.get(random.nextInt(phrases.size())));
-            comments.add(new Comment(comment,
+            StringBuilder comment = new StringBuilder();
+            comment.append(phrases.get(random.nextInt(phrases.size())));
+            comment.append(SEPARATOR);
+            comment.append(phrases.get(random.nextInt(phrases.size())));
+            comment.append(SEPARATOR);
+            comment.append(phrases.get(random.nextInt(phrases.size())));
+            comments.add(new Comment(comment.toString(),
                     userGenerator.randomUser()));
         }
     }
