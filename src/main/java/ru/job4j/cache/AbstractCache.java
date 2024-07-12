@@ -3,6 +3,7 @@ package ru.job4j.cache;
 import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.Map;
+import java.nio.file.Path;
 
 public abstract class AbstractCache<K, V> {
 
