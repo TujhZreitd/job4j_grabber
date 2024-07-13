@@ -29,7 +29,7 @@ public class Emulator {
                     System.out.print("Введите имя файла для загрузки в кэш: ");
                     String fileToLoad = scanner.nextLine();
                     if (cache != null) {
-                        cache.get(fileToLoad);
+                        cache.load(fileToLoad);
                         System.out.println("Файл загружен в кэш.");
                     } else {
                         System.out.println("Сначала укажите кэшируемую директорию.");

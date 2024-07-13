@@ -1,9 +1,6 @@
 package ru.job4j.cache;
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.io.IOException;
 
 public class DirFileCache extends AbstractCache<String, String> {
